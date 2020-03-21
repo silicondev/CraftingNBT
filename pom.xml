@@ -10,6 +10,10 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+        	<id>silicon-repo</id>
+        	<url>https://raw.github.com/silicondev/SiliconMCCLI/repository/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -20,17 +24,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-        	<groupId>io.github.silicondev</groupId>
-        	<artifactId>SiliconMCCLI</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
-        	<scope>system</scope>
-        	<systemPath>${project.basedir}/src/main/resources/SiliconMCCLI-0.0.1-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
         	<groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
             <version>3.1.0</version>
          	<type>maven-plugin</type>
+        </dependency>
+		<dependency>
+        	<groupId>io.github.silicondev</groupId>
+        	<artifactId>SiliconMCCLI</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        	<scope>compile</scope>
         </dependency>
     </dependencies>
     
