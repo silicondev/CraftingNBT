@@ -13,4 +13,9 @@ public class RemoveNbt implements ICLIOutput {
 		return false;
 	}
 
+	public boolean Run(CommandSender sender) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

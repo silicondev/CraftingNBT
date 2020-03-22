@@ -1,4 +1,14 @@
 name: CraftingNBT
 main: io.github.silicondev.craftingnbt.CraftingNBT
-version: 0.0.1-SNAPSHOT
+version: 0.0.2-SNAPSHOT
+api-version: 1.15
 commands:
+  cnbt:
+    description: The base command for CraftingNBT.
+    usage: /cnbt
+  cnbt test:
+    description: Tests if the plugin is functioning.
+    usage: /cnbt test
+  cnbt add:
+    description: Adds an nbt record.
+    usage: /cnbt add <datapack tag> <nbt>

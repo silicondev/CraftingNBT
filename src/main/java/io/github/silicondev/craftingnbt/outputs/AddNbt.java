@@ -10,6 +10,12 @@ public class AddNbt implements ICLIOutput {
 
 	public boolean Run(CommandSender sender, List<String> args) {
 		// TODO Auto-generated method stub
+		sender.sendMessage("AddNbt");
+		return true;
+	}
+
+	public boolean Run(CommandSender sender) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	
