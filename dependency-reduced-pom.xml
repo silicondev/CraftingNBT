@@ -4,7 +4,7 @@
   <groupId>io.github.silicondev</groupId>
   <artifactId>CraftingNBT</artifactId>
   <name>CraftingNBT</name>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>
@@ -36,6 +36,10 @@
     <repository>
       <id>silicon-repo</id>
       <url>https://raw.github.com/silicondev/SiliconMCCLI/repository/</url>
+    </repository>
+    <repository>
+      <id>codemc-repo</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
     </repository>
   </repositories>
   <dependencies>
