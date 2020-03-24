@@ -10,5 +10,8 @@ commands:
     description: Tests if the plugin is functioning.
     usage: /cnbt test
   cnbt add:
-    description: Adds an nbt record.
-    usage: /cnbt add <datapack tag> <nbt>
+    description: Adds an NBT record.
+    usage: /cnbt add <id> <datapack tag> <nbt>
+  cnbt remove:
+    description: Removes an NBT record.
+    usage: /cnbt remove <id>

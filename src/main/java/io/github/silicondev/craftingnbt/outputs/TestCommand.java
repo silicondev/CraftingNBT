@@ -5,10 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import io.github.silicondev.siliconmccli.ICLIOutput;
+import io.github.silicondev.siliconmccli.Result;
 
 public class TestCommand implements ICLIOutput {
 
-	public boolean Run(CommandSender sender, List<String> args) {
+	public Result Run(CommandSender sender, List<String> args) {
 		
 		if (args.size() > 0) {
 			String argString = "";
@@ -18,13 +19,6 @@ public class TestCommand implements ICLIOutput {
 			sender.sendMessage("Test succeeded with args: " + argString);
 		} else
 			sender.sendMessage("Test Succeeded with no args.");
-		return true;
+		return new Result(true, true);
 	}
-
-	@Override
-	public boolean Run(CommandSender sender) {
-		sender.sendMessage("Test Succeeded with no args.");
-		return true;
-	}
-	
 }
