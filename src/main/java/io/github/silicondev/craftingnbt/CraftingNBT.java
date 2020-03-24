@@ -1,15 +1,14 @@
 package io.github.silicondev.craftingnbt;
 
+import io.github.silicondev.craftingnbt.listeners.CraftListener;
 import io.github.silicondev.craftingnbt.outputs.*;
 import io.github.silicondev.siliconmccli.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,19 +40,18 @@ public class CraftingNBT extends JavaPlugin {
 			Outputs.put("test", new TestCommand());
 			Outputs.put("addnbt", new AddNbt(Config, this));
 			Outputs.put("removenbt", new RemoveNbt(Config, this));
+			Outputs.put("toggledebug", new ToggleDebug(Config, this));
 			
 			Commands.add(new CLICommand("cnbt", "main", new TestCommand(), new ArrayList<CLICommand>(Arrays.asList(
 				new CLICommand("test", "test", Outputs.get("test")),
 				new CLICommand("add", "addnbt", Outputs.get("addnbt")),
-				new CLICommand("remove", "removenbt", Outputs.get("removenbt"))
+				new CLICommand("remove", "removenbt", Outputs.get("removenbt")),
+				new CLICommand("debug", "toggledebug", Outputs.get("toggledebug"))
 			))));
 			
 			CommandHandler = new Handler(PluginName, Commands, false);
 			this.getCommand("cnbt").setExecutor(CommandHandler);
-			
-			Map<String, Object> ConfigValues = new HashMap<String, Object>();
-			
-			// Do something with the config values.
+			this.getServer().getPluginManager().registerEvents(new CraftListener(this, Config), this);
 			
 			getLogger().info("Enabled " + PluginName + " successfully!");
 			
