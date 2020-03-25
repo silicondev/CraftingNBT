@@ -4,7 +4,7 @@
   <groupId>io.github.silicondev</groupId>
   <artifactId>CraftingNBT</artifactId>
   <name>CraftingNBT</name>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.1</version>
   <build>
     <plugins>
       <plugin>
