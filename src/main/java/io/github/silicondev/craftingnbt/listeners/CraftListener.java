@@ -4,14 +4,12 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Objective;
@@ -31,7 +29,10 @@ public class CraftListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onCraftItem(CraftItemEvent event) {
+	public void onCraftItem(PrepareItemCraftEvent event) {
+		if (event.getRecipe() == null)
+			return;
+		
 		ItemStack item = event.getRecipe().getResult();
 		Material type = item.getType();
 		if (!type.isBlock())
@@ -41,14 +42,13 @@ public class CraftListener implements Listener {
 		
 		_runCommand("scoreboard objectives add tempStore dummy");
 		
-		Player player = (Player)event.getWhoClicked();
+		Player player = (Player)event.getInventory().getHolder();
 		
-		_runCommand("scoreboard objectives add tempStore dummy");
+		Scoreboard scoreboard = _parent.getServer().getScoreboardManager().getMainScoreboard();
+		Objective objective = scoreboard.getObjective("tempStore");
 		if (debug) player.sendMessage("[CraftingNBT/debug] Added tempStore Objective.");
 		
-		Location loc = player.getLocation();
-		Block existingBlock = loc.getBlock();
-		BlockData existingData = existingBlock.getBlockData();
+		Location loc = new Location(player.getWorld(), 0, 0, 0);
 		loc.getBlock().setType(type);
 		if (debug) player.sendMessage("[CraftingNBT/debug] Set block to one that's being crafted.");
 		
@@ -64,32 +64,38 @@ public class CraftListener implements Listener {
 			ConfigurationSection subSection = (ConfigurationSection)entry.getValue();
 			
 			String tag = subSection.getString("tag").trim();
-			String nbt = subSection.getString("nbt").trim();
+			String nbt = subSection.getString("data").trim();
+			
+			if (debug) player.sendMessage("[CraftingNBT/debug] Checking " + tag + ".");
 			
 			if (!tag.startsWith("#"))
 				tag = "#" + tag;
 			
-			Location playerLoc = player.getLocation();
-			_runCommand("/execute store success score " + player.getName() + " store if block " + String.valueOf(playerLoc.getBlockX()) + " " + String.valueOf(playerLoc.getBlockY()) + " " + String.valueOf(playerLoc.getBlockZ()) + " " + tag);
+			_runCommand("execute store success score " + player.getName() + " tempStore if block 0 0 0 " + tag);
 			
-			Scoreboard scoreboard = _parent.getServer().getScoreboardManager().getMainScoreboard();
-			Objective objective = scoreboard.getObjective("tempStore");
 			int score = objective.getScore(player.getName()).getScore();
 			
 			if (score == 1) {
-				if (debug) player.sendMessage("[CraftingNBT/debug] Found matching node and modifying item.");
+				if (debug) player.sendMessage("[CraftingNBT/debug] Found matching node and adding " + nbt + ".");
 				
 				NBTItem nbtItem = new NBTItem(item);
 				nbtItem.mergeCompound(new NBTContainer(nbt));
-				item = nbtItem.getItem();
+				ItemStack newItem = nbtItem.getItem();
+				
+				if (debug && newItem == item) player.sendMessage("[WARN][CraftingNBT/debug] Both new and old items are identical!!");
+				
+				ItemStack tmp = new ItemStack(Material.STONE);
+				ItemStack result = new ItemStack(item.getType());
+				result.setAmount(item.getAmount());
+				result.setItemMeta(newItem.getItemMeta());
+				event.getInventory().setResult(result);
 			}
 		}
 		
-		loc.getBlock().setType(existingBlock.getType());
-		loc.getBlock().setBlockData(existingData);
+		loc.getBlock().setType(Material.BEDROCK);
 		if (debug) player.sendMessage("[CraftingNBT/debug] Reset block.");
 		
-		_runCommand("scoreboard objectives remove tempStore");
+		objective.unregister();
 		if (debug) player.sendMessage("[CraftingNBT/debug] Removed tempStore Objective.");
 	}
 	
