@@ -1,6 +1,6 @@
 name: CraftingNBT
 main: io.github.silicondev.craftingnbt.CraftingNBT
-version: 0.0.3-SNAPSHOT
+version: 0.0.4-SNAPSHOT
 api-version: 1.15
 commands:
   cnbt:
